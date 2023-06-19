@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package example;
+
+service LongTimeRequestService {
+  rpc LongTimeRequestStream (stream Request) returns (stream Response);
+}
+
+message Request {
+  string data = 1;
+}
+
+message Response {
+  string result = 1;
+}
