@@ -1,6 +1,8 @@
 syntax = "proto3";
 
-package example;
+package service;
+
+option go_package = "./service";
 
 service LongTimeRequestService {
   rpc LongTimeRequestStream (stream Request) returns (stream Response);
