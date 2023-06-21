@@ -8,6 +8,10 @@ service LongTimeRequestService {
   rpc LongTimeRequestStream (stream Request) returns (stream Response);
 }
 
+// service LongTimeRequestService {
+//   rpc LongTimeRequestStream (Request) returns (stream Response);
+// }
+
 message Request {
   string data = 1;
 }
