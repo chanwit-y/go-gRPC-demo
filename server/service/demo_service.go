@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"io"
 	"log"
 	"strconv"
@@ -57,5 +58,28 @@ func (d demoService) LongTimeRequestStream(stream LongTimeRequestService_LongTim
 }
 
 func (d demoService) LongTimeRequestStream2(stream LongTimeRequestService_LongTimeRequestStream2Server) error {
+	for {
+		req, err := stream.Recv()
+
+		fmt.Printf("Received x: %v\n", req.GetData())
+		if err == io.EOF {
+			// The client has closed the stream.
+			return nil
+		}
+
+		// fmt.Printf("Received x: %v\n", req.GetData())
+		if err != nil {
+			// log.Fatalf("error while reading client stream: %v", err)
+			fmt.Printf("error while reading client stream: %v \n", err)
+			break
+		}
+
+		// Handle the request and send a response.
+		response := Response{Result: "Received: " + req.GetData()}
+		if err := stream.Send(&response); err != nil {
+			log.Fatalf("Error while sending response to client: %v", err)
+		}
+	}
+
 	return nil
 }
