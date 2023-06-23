@@ -55,3 +55,7 @@ func (d demoService) LongTimeRequestStream(stream LongTimeRequestService_LongTim
 	}
 
 }
+
+func (d demoService) LongTimeRequestStream2(stream LongTimeRequestService_LongTimeRequestStream2Server) error {
+	return nil
+}
