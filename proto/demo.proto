@@ -4,8 +4,14 @@ package service;
 
 option go_package = "./service";
 
+// LongTimeResponseService
 service LongTimeRequestService {
   rpc LongTimeRequestStream (stream Request) returns (stream Response);
+}
+
+// LongTimeRequestService
+service LongTimeRequestService2 {
+  rpc LongTimeRequestStream2 (stream Request) returns (stream Response);
 }
 
 // service LongTimeRequestService {

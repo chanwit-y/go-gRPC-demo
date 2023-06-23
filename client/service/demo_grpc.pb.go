@@ -136,3 +136,122 @@ var LongTimeRequestService_ServiceDesc = grpc.ServiceDesc{
 	},
 	Metadata: "demo.proto",
 }
+
+// LongTimeRequestService2Client is the client API for LongTimeRequestService2 service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type LongTimeRequestService2Client interface {
+	LongTimeRequestStream2(ctx context.Context, opts ...grpc.CallOption) (LongTimeRequestService2_LongTimeRequestStream2Client, error)
+}
+
+type longTimeRequestService2Client struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewLongTimeRequestService2Client(cc grpc.ClientConnInterface) LongTimeRequestService2Client {
+	return &longTimeRequestService2Client{cc}
+}
+
+func (c *longTimeRequestService2Client) LongTimeRequestStream2(ctx context.Context, opts ...grpc.CallOption) (LongTimeRequestService2_LongTimeRequestStream2Client, error) {
+	stream, err := c.cc.NewStream(ctx, &LongTimeRequestService2_ServiceDesc.Streams[0], "/service.LongTimeRequestService2/LongTimeRequestStream2", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &longTimeRequestService2LongTimeRequestStream2Client{stream}
+	return x, nil
+}
+
+type LongTimeRequestService2_LongTimeRequestStream2Client interface {
+	Send(*Request) error
+	Recv() (*Response, error)
+	grpc.ClientStream
+}
+
+type longTimeRequestService2LongTimeRequestStream2Client struct {
+	grpc.ClientStream
+}
+
+func (x *longTimeRequestService2LongTimeRequestStream2Client) Send(m *Request) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *longTimeRequestService2LongTimeRequestStream2Client) Recv() (*Response, error) {
+	m := new(Response)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+// LongTimeRequestService2Server is the server API for LongTimeRequestService2 service.
+// All implementations must embed UnimplementedLongTimeRequestService2Server
+// for forward compatibility
+type LongTimeRequestService2Server interface {
+	LongTimeRequestStream2(LongTimeRequestService2_LongTimeRequestStream2Server) error
+	mustEmbedUnimplementedLongTimeRequestService2Server()
+}
+
+// UnimplementedLongTimeRequestService2Server must be embedded to have forward compatible implementations.
+type UnimplementedLongTimeRequestService2Server struct {
+}
+
+func (UnimplementedLongTimeRequestService2Server) LongTimeRequestStream2(LongTimeRequestService2_LongTimeRequestStream2Server) error {
+	return status.Errorf(codes.Unimplemented, "method LongTimeRequestStream2 not implemented")
+}
+func (UnimplementedLongTimeRequestService2Server) mustEmbedUnimplementedLongTimeRequestService2Server() {
+}
+
+// UnsafeLongTimeRequestService2Server may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to LongTimeRequestService2Server will
+// result in compilation errors.
+type UnsafeLongTimeRequestService2Server interface {
+	mustEmbedUnimplementedLongTimeRequestService2Server()
+}
+
+func RegisterLongTimeRequestService2Server(s grpc.ServiceRegistrar, srv LongTimeRequestService2Server) {
+	s.RegisterService(&LongTimeRequestService2_ServiceDesc, srv)
+}
+
+func _LongTimeRequestService2_LongTimeRequestStream2_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(LongTimeRequestService2Server).LongTimeRequestStream2(&longTimeRequestService2LongTimeRequestStream2Server{stream})
+}
+
+type LongTimeRequestService2_LongTimeRequestStream2Server interface {
+	Send(*Response) error
+	Recv() (*Request, error)
+	grpc.ServerStream
+}
+
+type longTimeRequestService2LongTimeRequestStream2Server struct {
+	grpc.ServerStream
+}
+
+func (x *longTimeRequestService2LongTimeRequestStream2Server) Send(m *Response) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *longTimeRequestService2LongTimeRequestStream2Server) Recv() (*Request, error) {
+	m := new(Request)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+// LongTimeRequestService2_ServiceDesc is the grpc.ServiceDesc for LongTimeRequestService2 service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var LongTimeRequestService2_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "service.LongTimeRequestService2",
+	HandlerType: (*LongTimeRequestService2Server)(nil),
+	Methods:     []grpc.MethodDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "LongTimeRequestStream2",
+			Handler:       _LongTimeRequestService2_LongTimeRequestStream2_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
+		},
+	},
+	Metadata: "demo.proto",
+}
