@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"grpc-client/service"
 	"log"
 	"time"
@@ -36,6 +37,36 @@ import (
 // 	}
 // }
 
+// func main() {
+// 	conn, err := grpc.Dial(":50051", grpc.WithInsecure())
+// 	if err != nil {
+// 		log.Fatalf("Did not connect: %v", err)
+// 	}
+// 	defer conn.Close()
+
+// 	client := service.NewLongTimeRequestServiceClient(conn)
+
+// 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+// 	defer cancel()
+
+// 	stream, err := client.LongTimeRequestStream2(ctx)
+// 	if err != nil {
+// 		log.Fatalf("Error on get stream: %v", err)
+// 	}
+
+// 	req := service.Request{Data: "Test data 1"}
+// 	if err := stream.Send(&req); err != nil {
+// 		log.Fatalf("Error while sending stream: %v", err)
+// 	}
+
+// 	res, err := stream.Recv()
+// 	if err != nil {
+// 		log.Fatalf("Error while receiving stream: %v", err)
+// 	}
+
+// 	log.Printf("Response from server: %s", res.GetResult())
+// }
+
 func main() {
 	conn, err := grpc.Dial(":50051", grpc.WithInsecure())
 	if err != nil {
@@ -43,25 +74,15 @@ func main() {
 	}
 	defer conn.Close()
 
-	client := service.NewLongTimeRequestServiceClient(conn)
+	client := service.NewRepeatedServiceClient(conn)
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	stream, err := client.LongTimeRequestStream2(ctx)
+	res, err := client.GetBeer(ctx, &service.RequestRepeated{Code: "01", Name: "Test data 1"})
 	if err != nil {
-		log.Fatalf("Error on get stream: %v", err)
+		fmt.Printf("Error on get data: %v", err)
 	}
 
-	req := service.Request{Data: "Test data 1"}
-	if err := stream.Send(&req); err != nil {
-		log.Fatalf("Error while sending stream: %v", err)
-	}
-
-	res, err := stream.Recv()
-	if err != nil {
-		log.Fatalf("Error while receiving stream: %v", err)
-	}
-
-	log.Printf("Response from server: %s", res.GetResult())
+	fmt.Printf("Response from server: %v", res.GetRequests())
 }

@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package service;
+
+option go_package = "./service";
+
+message RequestRepeated {
+  string code = 1;
+  string name = 2;
+}
+
+message ResponseRepeated {
+	repeated RequestRepeated requests = 1;
+}
+
+service RepeatedService {
+  rpc GetBeer (RequestRepeated) returns (ResponseRepeated);
+}

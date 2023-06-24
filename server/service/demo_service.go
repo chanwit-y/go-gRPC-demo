@@ -61,13 +61,11 @@ func (d demoService) LongTimeRequestStream2(stream LongTimeRequestService_LongTi
 	for {
 		req, err := stream.Recv()
 
-		fmt.Printf("Received x: %v\n", req.GetData())
 		if err == io.EOF {
 			// The client has closed the stream.
 			return nil
 		}
 
-		// fmt.Printf("Received x: %v\n", req.GetData())
 		if err != nil {
 			// log.Fatalf("error while reading client stream: %v", err)
 			fmt.Printf("error while reading client stream: %v \n", err)

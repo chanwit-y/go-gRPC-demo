@@ -17,6 +17,7 @@ func main() {
 
 	s := grpc.NewServer()
 	bp.RegisterLongTimeRequestServiceServer(s, bp.NewDemoService())
+	bp.RegisterRepeatedServiceServer(s, bp.NewRepeatedService())
 
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("Failed to serve: %v", err)
